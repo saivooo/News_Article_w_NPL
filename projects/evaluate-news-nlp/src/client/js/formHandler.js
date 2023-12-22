@@ -1,16 +1,21 @@
 function handleSubmit(event) {
-    event.preventDefault()
+    event.preventDefault();
+    let formText = document.getElementById('userSentence').textContent;
+    const formData = new FormData();
+    formData.append('txt', formText)
 
-    // check what text was put into the form field
-    let formText = document.getElementById('name').value
-    checkForName(formText)
-
-    console.log("::: Form Submitted :::")
-    fetch('http://localhost:8080/test')
-    .then(res => res.json())
-    .then(function(res) {
-        document.getElementById('results').innerHTML = res.message
-    })
+     fetch("https://api.meaningcloud.com/sentiment-2.1", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        },
+        body: JSON.stringify({ formData: formData})
+     })
+     .then(data => {
+        console.log('Response from server: ', data)
+     })
+     .catch(error => {
+        console.error(error)
+     })
 }
-
-export { handleSubmit }
+export { handleSubmit };
