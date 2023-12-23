@@ -3,6 +3,7 @@ dotenv.config();
 var path = require('path')
 const express = require('express')
 const app = express()
+// // const axios = require('axios');
 const bodyParser = require('body-parser')
 app.use(bodyParser.json());
 const cors = require('cors');
@@ -19,25 +20,15 @@ app.get('/', function (req, res) {
     // res.sendFile(path.resolve('dist/index.html'))
 })
 
-app.post(apiUrl, async (req, res) => {
-    const data = req.body.formData
-    const requestBody = {
-        data: data,
-        key: key
-    }
-
+app.post('/test', async (req, res) => {
     try {
-        const response = await fetch(apiUrl, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            },
-            body: JSON.stringify(requestBody)
-        });
-        const responseData = await response.json();
-        res.json(responseData);
+        console.log(req.body.txt)
+        const sentiment = await fetch(`${apiUrl}&key=${key}&txt=${req.body.txt}&lang=${req.body.lang}`)
+        const articleResponse = await sentiment.json()
+        res.send(articleResponse)
     } catch (error) {
         res.status(500).json({ error: 'Internal server error' });
+        console.log(error.message)
     }
 })
 // designates what port the app will listen to for incoming requests
