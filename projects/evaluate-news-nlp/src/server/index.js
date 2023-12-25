@@ -31,8 +31,10 @@ app.post('/test', async (req, res) => {
             subjectivity: articleResponse.subjectivity,
             confidence: articleResponse.confidence,
             irony: articleResponse.irony,
-            segmentedCoceptList: articleResponse.segmentedCoceptList
+            sentimentedConceptList: articleResponse.sentimented_concept_list
         }
+        console.log("--------------------------------------------------------------------------")
+        console.log(returnData)
         res.send(returnData)
     } catch (error) {
         res.status(500).json({ error: 'Internal server error' });
