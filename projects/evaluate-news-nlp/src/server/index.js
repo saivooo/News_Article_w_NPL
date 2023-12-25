@@ -22,7 +22,7 @@ app.get('/', function (req, res) {
 
 app.post('/test', async (req, res) => {
     try {
-        console.log(req.body.txt)
+        // console.log(req.body.txt)
         const sentiment = await fetch(`${apiUrl}&key=${key}&txt=${req.body.txt}&lang=${req.body.lang}`)
         const articleResponse = await sentiment.json()
         res.send(articleResponse)

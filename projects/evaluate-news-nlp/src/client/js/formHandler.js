@@ -1,7 +1,6 @@
 function handleSubmit(event) {
     event.preventDefault();
     let formText = document.getElementById('userSentence').value;
-    console.log("FOROJSOJIF "+formText)
     const formData = {
         txt: formText,
         lang: 'auto'
@@ -10,6 +9,7 @@ function handleSubmit(event) {
 
     fetch('/test', {
         method: 'POST',
+        mode: 'cors',
         headers: {
             'Content-Type': 'application/json'
         },
