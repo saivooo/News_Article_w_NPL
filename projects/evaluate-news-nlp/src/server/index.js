@@ -25,7 +25,15 @@ app.post('/test', async (req, res) => {
         // console.log(req.body.txt)
         const sentiment = await fetch(`${apiUrl}&key=${key}&txt=${req.body.txt}&lang=${req.body.lang}`)
         const articleResponse = await sentiment.json()
-        res.send(articleResponse)
+        console.log(articleResponse)
+        const returnData = {
+            sentence: articleResponse.sentence_list,
+            subjectivity: articleResponse.subjectivity,
+            confidence: articleResponse.confidence,
+            irony: articleResponse.irony,
+            segmentedCoceptList: articleResponse.segmentedCoceptList
+        }
+        res.send(returnData)
     } catch (error) {
         res.status(500).json({ error: 'Internal server error' });
         console.log(error.message)

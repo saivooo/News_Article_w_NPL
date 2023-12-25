@@ -15,6 +15,13 @@ function handleSubmit(event) {
         },
         body: JSON.stringify(formData)
     })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            console.log(response)
+            return response;
+        })
         .then(data => {
             console.log('Response from server: ', data)
         })
