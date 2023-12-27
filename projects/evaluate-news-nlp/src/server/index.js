@@ -1,13 +1,15 @@
 const dotenv = require('dotenv');
 dotenv.config();
 var path = require('path')
-const express = require('express')
-const app = express()
-// // const axios = require('axios');
-const bodyParser = require('body-parser')
-app.use(bodyParser.json());
+// const bodyParser = require('body-parser')
+// app.use(bodyParser.json());
+const express = require('express');
+const app = express();
 const cors = require('cors');
 app.use(cors());
+const multer = require('multer');
+const upload = multer();
+// // const axios = require('axios');
 
 app.use(express.static('dist'))
 
@@ -20,22 +22,21 @@ app.get('/', function (req, res) {
     // res.sendFile(path.resolve('dist/index.html'))
 })
 
-app.post('/test', async (req, res) => {
+app.post('/test', upload.none(), async (req, res) => {
     try {
-        // console.log(req.body.txt)
-        const sentiment = await fetch(`${apiUrl}&key=${key}&txt=${req.body.txt}&lang=${req.body.lang}`)
+        res.setHeader('Content-Type', 'application/json')
+        req.body.key = key;
+        const sentiment = await fetch(`${apiUrl}&key=${req.body.key}&lang=${req.body.lang}&txt=${req.body.txt}`)
         const articleResponse = await sentiment.json()
-        console.log(articleResponse)
         const returnData = {
             sentence: articleResponse.sentence_list,
             subjectivity: articleResponse.subjectivity,
             confidence: articleResponse.confidence,
             irony: articleResponse.irony,
-            sentimentedConceptList: articleResponse.sentimented_concept_list
         }
         console.log("--------------------------------------------------------------------------")
         console.log(returnData)
-        res.send(returnData)
+        res.json(returnData)
     } catch (error) {
         res.status(500).json({ error: 'Internal server error' });
         console.log(error.message)

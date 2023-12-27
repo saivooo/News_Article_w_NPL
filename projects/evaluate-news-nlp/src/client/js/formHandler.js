@@ -1,29 +1,31 @@
 function handleSubmit(event) {
     event.preventDefault();
     let formText = document.getElementById('userSentence').value;
-    const formData = {
-        txt: formText,
-        lang: 'auto'
-    };
-    // formData.append('txt', formText)
+    if (formText == ""){
+        return alert("can't be blank")
+    }
+    const formdata = new FormData();
+    formdata.append("txt", formText);
+    formdata.append("lang", "auto");
 
     fetch('/test', {
         method: 'POST',
-        mode: 'cors',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(formData)
+        body: formdata
     })
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
-            console.log(response)
-            return response;
+            return response.json();
         })
         .then(data => {
-            console.log('Response from server: ', data)
+            console.log("-------------------------------------------------")
+            console.log(data)            
+            document.getElementById('text').textContent = data.sentence[0].text;
+            document.getElementById('subjectivity').textContent = data.subjectivity;
+            document.getElementById('confidence').textContent = `${data.confidence}%`;
+            document.getElementById('irony').textContent = data.irony;
+            console.log("-------------------------------------------------")
         })
         .catch(error => {
             console.error(error)
