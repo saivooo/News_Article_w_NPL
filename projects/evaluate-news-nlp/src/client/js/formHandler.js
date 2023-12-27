@@ -26,6 +26,7 @@ function handleSubmit(event) {
             document.getElementById('confidence').textContent = `${data.confidence}%`;
             document.getElementById('irony').textContent = data.irony;
             console.log("-------------------------------------------------")
+            document.getElementById('userSentence').value = ""
         })
         .catch(error => {
             console.error(error)
